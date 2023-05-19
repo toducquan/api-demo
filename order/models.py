@@ -6,10 +6,10 @@ import datetime
 def gen_new_id():
     current_date = datetime.datetime.today().strftime(r'%Y%m%d')
     with transaction.atomic():
-        order = OrderCounter.objects.select_for_update().get_or_create(date=current_date)[0]
-        new_number = order.counter + 1
-        OrderCounter.objects.filter(pk=order.pk).update(counter=F('counter') + 1)
-    return f"{current_date}-{new_number:05d}"
+        order_counter = OrderCounter.objects.select_for_update().get_or_create(date=current_date)[0]
+        new_counter = order_counter.counter + 1
+        OrderCounter.objects.filter(pk=order_counter.pk).update(counter=F('counter') + 1)
+    return f"{current_date}-{new_counter:05d}"
 
 class OrderCounter(models.Model):
     date = models.CharField(primary_key=True, max_length=255)

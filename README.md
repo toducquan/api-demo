@@ -30,3 +30,6 @@ order = OrderCounter.objects.select_for_update().get_or_create(date=current_date
 ```
 
 By locking the resource, we ensure that only one request is processed at a time. Once the current request is completed, the resource is unlocked and available to serve the next request.
+
+This solution will help you achieve better performance in high concurrent traffic scenarios. However, the downside is that it requires storing a large number of records in the `OrderCounter` database.
+
