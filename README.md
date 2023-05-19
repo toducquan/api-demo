@@ -7,7 +7,7 @@ Please use Django/ Python for your solution. The logic and thought process demon
 ## How to run:
 
 1. Clone this repository and go to the project folder
-2. Please ensure that ports 8000 and 5432 are available
+2. Please ensure that ports `8000` and `5432` are available
 3. Build docker image and run docker container
 
 ```bash
@@ -21,9 +21,9 @@ docker-compose up
 
 ## Solution explanation:
 
-I have created an OrderCounter model to store the counter value. Whenever a client sends a request to the endpoint, the gen_new_id function is called. It increments the counter field by 1 or creates a new record with a default value of 0 if the date is not found in the database.
+I have created an `OrderCounter` model to store the counter value. Whenever a client sends a request to the endpoint, the `gen_new_id` function is called. It increments the counter field by 1 or creates a new record with a default value of 0 if the date is not found in the database.
 
-To prevent the creation of duplicate primary keys in high concurrent traffic scenarios, I use the select_for_update() method to lock the record that has been updated or created:
+To prevent the creation of duplicate primary keys in high concurrent traffic scenarios, I use the `select_for_update` method to lock the record that has been updated or created:
 
 ```bash
 order = OrderCounter.objects.select_for_update().get_or_create(date=current_date)[0]
