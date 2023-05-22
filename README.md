@@ -14,12 +14,11 @@ Please use Django/ Python for your solution. The logic and thought process demon
 docker-compose up
 ```
 
-## Request:
+
+## Solution 1:
 
 - Method: `POST`
 - Endpoint: `http://localhost:8000/api/order/`
-
-## Solution explanation:
 
 I have created an `OrderCounter` model to store the counter value. Whenever a client sends a request to the endpoint, the `gen_new_id` function is called. It increments the counter field by 1 or creates a new record with a default value of 0 if the date is not found in the database.
 
@@ -33,3 +32,11 @@ By locking the resource, we ensure that only one request is processed at a time.
 
 This solution will help you achieve better performance in high concurrent traffic scenarios. However, the downside is that it requires storing a large number of records in the `OrderCounter` database.
 
+## Solution 2:
+
+- Method: `POST`
+- Endpoint: `http://localhost:8000/api/order-v2/`
+
+This solution is simple. The `id` field is assigned a value by invoking the `gen_new_id_v2` function. This function finds the latest counter value. If the latest counter value is not `None`, we increment it by 1. Otherwise, we return 1.
+
+However, when faced with high concurrent traffic, multiple requests are processed simultaneously, which can result in errors due to duplicated primary keys.
